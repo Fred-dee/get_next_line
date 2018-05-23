@@ -51,6 +51,8 @@ int	get_next_line(const int fd, char **line)
 	while(read_ret != 0 && new_line == -1 && i < BUFF_SIZE)
 	{
 		read_ret = read(fd, ret, 1);
+		if (read_ret == -1)
+			return (read_ret);
 		new_line = found_nl(ret);
 		if (new_line != -1)
 			ret[new_line] = '\0';	
