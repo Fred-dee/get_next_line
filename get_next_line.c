@@ -14,6 +14,7 @@
 #include "./libft/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 int	found_nl(const char *s)
 {
@@ -37,6 +38,7 @@ int	get_next_line(const int fd, char **line)
 	char	*tmp;
 	int		new_line;
 	size_t	i;
+	int		count;
 
 	if (fd < 0)
 		return (-1);
@@ -46,10 +48,12 @@ int	get_next_line(const int fd, char **line)
 	read_ret = 3;
 	new_line = -1;
 	i = 0;
+	count = 1;
 	ret = ft_strnew(BUFF_SIZE);
 	tmp = ft_strnew(BUFF_SIZE);
 	while(read_ret != 0 && new_line == -1 && i < BUFF_SIZE)
 	{
+		ft_strclr(ret);
 		read_ret = read(fd, ret, 1);
 		if (read_ret == -1)
 			return (read_ret);
