@@ -51,7 +51,7 @@ int	get_next_line(const int fd, char **line)
 	count = 1;
 	ret = ft_strnew(BUFF_SIZE);
 	tmp = ft_strnew(BUFF_SIZE);
-	while(read_ret != 0 && new_line == -1 && i < BUFF_SIZE)
+	while(read_ret != 0 && new_line == -1 && i < BUFF_SIZE * count)
 	{
 		ft_strclr(ret);
 		read_ret = read(fd, ret, 1);
@@ -61,6 +61,9 @@ int	get_next_line(const int fd, char **line)
 		if (new_line != -1)
 			ret[new_line] = '\0';	
 		tmp = ft_strjoin(tmp,ret);
+		if (i == BUFF_SIZE * count - 1)
+			count++;
+		i++;
 	}
 	free(ret);
 	*line = tmp;
