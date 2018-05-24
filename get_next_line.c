@@ -60,9 +60,12 @@ int	get_next_line(const int fd, char **line)
 		new_line = found_nl(ret);
 		if (new_line != -1)
 			ret[new_line] = '\0';	
-		tmp = ft_strjoin(tmp,ret);
+		
 		if (i == BUFF_SIZE * count - 1)
+		{
 			count++;
+			tmp = ft_strjoin(tmp, ret);
+		} else tmp = ft_strncat(tmp, ret, BUFF_SIZE * count);
 		i++;
 	}
 	free(ret);
