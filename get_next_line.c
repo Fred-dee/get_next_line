@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int	found_nl(const char *s)
+static int	found_nl(const char *s)
 {
 	int i;
 
@@ -31,26 +31,16 @@ int	found_nl(const char *s)
 	return (-1);
 }
 
-int	get_next_line(const int fd, char **line)
+static int gnl(char *ret, char **tmp, const int fd)
 {
-	int		read_ret;
-	char	*ret;
-	char	*tmp;
-	int		new_line;
-	size_t	i;
 	int		count;
-
-	if (fd < 0)
-		return (-1);
-	if (line == NULL)
-		if ((line = (char **)malloc(sizeof(char *))) == NULL)
-			return (-1);
-	read_ret = 3;
-	new_line = -1;
-	i = 0;
+	int		new_line;
+	int 	read_ret;
+	size_t	i;
+	
 	count = 1;
-	ret = ft_strnew(BUFF_SIZE);
-	tmp = ft_strnew(BUFF_SIZE);
+	i = 0;
+	new_line = -1;
 	while(read_ret != 0 && new_line == -1 && i < BUFF_SIZE * count)
 	{
 		ft_strclr(ret);
@@ -60,16 +50,35 @@ int	get_next_line(const int fd, char **line)
 		new_line = found_nl(ret);
 		if (new_line != -1)
 			ret[new_line] = '\0';	
-		
 		if (i == BUFF_SIZE * count - 1)
 		{
 			count++;
-			tmp = ft_strjoin(tmp, ret);
-		} else tmp = ft_strncat(tmp, ret, BUFF_SIZE * count);
+			*tmp = ft_strjoin(*tmp, ret);
+		} else *tmp = ft_strncat(*tmp, ret, BUFF_SIZE * count);
 		i++;
 	}
-	free(ret);
+	return (read_ret);
+}
+
+int	get_next_line(const int fd, char **line)
+{
+	int		read_ret;
+	char	*ret;
+	char	*tmp;
+
+	if (fd < 0)
+		return (-1);
+	if (line == NULL)
+		if ((line = (char **)malloc(sizeof(char *))) == NULL)
+			return (-1);
+	ret = ft_strnew(BUFF_SIZE);
+	tmp = ft_strnew(BUFF_SIZE);
+	ft_strclr(tmp);
+	read_ret = gnl(ret, &tmp, fd);
 	*line = tmp;
+	free(ret);
+	if (read_ret == -1)
+		return (read_ret);
 	if (read_ret == 0)
 		return (0);
 	return (1);
