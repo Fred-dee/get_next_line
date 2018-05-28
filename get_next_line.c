@@ -32,14 +32,14 @@ static int	found_nl(const char *s)
 }
 static int	cat_join(size_t *i, int *count, char **tmp, char *ret)
 {
-	if (*i == (size_t)(BUFF_SIZE * *count - 1))
+	if (*i == (size_t)(BUFF_SIZE * *count))
 	{
 		*count = *count + 1;
 		if ((*tmp = ft_strjoin(*tmp, ret)) == NULL)
 			return (-1);
 	} else 
 	{
-		*tmp = ft_strncat(*tmp, ret, BUFF_SIZE * *count + 3);
+		*tmp = ft_strncat(*tmp, ret, BUFF_SIZE * *count);
 	}
 	return (1);
 }
@@ -54,7 +54,7 @@ static int	gnl(char *ret, char **tmp, const int fd)
 	i = 0;
 	new_line = -1;
 	read_ret = 3;
-	while(read_ret != 0 && new_line == -1 && i < (size_t)BUFF_SIZE * count)
+	while(read_ret != 0 && new_line == -1 && i < (size_t)BUFF_SIZE * count + 1)
 	{
 		ft_strclr(ret);
 		read_ret = read(fd, ret, 1);
