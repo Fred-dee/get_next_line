@@ -24,7 +24,7 @@ char *get_uptonl(char *s1)
 	i = 0;
 	while (s1[i] != '\0' && s1[i] != '\n')
 		i++;
-	if((ret = (char *)malloc(sizeof(char) * i)) != NULL)
+	if((ret = (char *)malloc(sizeof(char) * i + 1)) != NULL)
 	{
 		i = 0;
 		while(s1[i] != '\0' && s1[i] != '\n')
@@ -32,18 +32,20 @@ char *get_uptonl(char *s1)
 			ret[i] = s1[i];
 			i++;
 		}
+		ret[i] = '\0';
 	}
 	return (ret);
 }
+
 int	get_next_line(const int fd, char **line)
 {
-	static char	buffer[BUFF_SIZE];
+	static char	buffer[BUFF_SIZE + 1];
 	static char *ptr;
 	char *tmp;
 	char *ret_line;
 	int	read_ret;
 	int newline = 0;
-	read_ret = 3;
+	read_ret = 20;
 	if (line == NULL || fd < 0)
 		return (-1);
 	ret_line = ft_strnew(BUFF_SIZE + 1);
@@ -51,27 +53,34 @@ int	get_next_line(const int fd, char **line)
 	if (ft_isempty(buffer))
 	{
 		read_ret = read(fd, buffer, BUFF_SIZE);
+		buffer[read_ret + 1] = '\0';
 		if (read_ret == -1)
 			return (read_ret);
 		ptr = buffer;
 	}
-	while (newline == 0 && read_ret != -1)
+	while (newline == 0 && read_ret > 0)
 	{
 		tmp = ft_strchr(ptr, '\n');
 		if(tmp)
 		{
+			//printf("String join : 1\n");
 			ret_line = ft_strjoin(ret_line, get_uptonl(ptr));
+			//printf("String join : 1-2\n");
 			newline = 1;
 			if (ptr - tmp  == 0)
 			{
 				ft_strclr(buffer);
-			} 
-			ptr = ++tmp;			
+				ptr = buffer;
+			}
+			ptr = ++tmp;	
 		}
 		else 
 		{
+			//printf("String join : 2\n");
 			ret_line = ft_strjoin(ret_line, ptr);
+			//printf("String join : 2-2\n");
 			read_ret = read(fd, buffer, BUFF_SIZE);
+			buffer[read_ret + 1] = '\0';
 			ptr = buffer;
 		}
 	}
