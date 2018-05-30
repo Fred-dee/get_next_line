@@ -18,7 +18,7 @@
 
 int	get_next_line(const int fd, char **line)
 {
-	static char	buffer[BUFF_SIZE + 1];
+	static char	buffer[BUFF_SIZE];
 	static char *ptr;
 	char *tmp;
 	char *ret_line;
@@ -36,19 +36,23 @@ int	get_next_line(const int fd, char **line)
 			return (read_ret);
 		ptr = buffer;
 	}
-	tmp = ret_line;
 	while (newline == 0 && read_ret != -1)
 	{
-		ptr = ft_strchr(buffer, '\n');
-		if(ptr)
+		tmp = ft_strchr(ptr, '\n');
+		if(tmp)
 		{
-			ret_line = ft_strjoin(ret_line, ft_strsub(buffer, 0, ptr - buffer));
+			ret_line = ft_strjoin(ret_line, ft_strsub(ptr, 0, ptr - tmp));
 			newline = 1;
+			if (ptr - tmp  == 0)
+			{
+				ft_strclr(buffer);
+			} else ptr = ++tmp;			
 		}
 		else 
 		{
 			ret_line = ft_strjoin(ret_line, buffer);
 			read_ret = read(fd, buffer, BUFF_SIZE);
+			ptr = buffer;
 		}
 	}
 	*line = ret_line;
