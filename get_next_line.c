@@ -36,6 +36,7 @@ static char	*get_uptonl(char *s1)
 	}
 	return (ret);
 }
+
 static int	inital_test(char *buffer, int *read_ret, const int fd)
 {
 	if (ft_isempty(buffer))
@@ -49,13 +50,11 @@ static int	inital_test(char *buffer, int *read_ret, const int fd)
 	return (1);
 }
 
-
 int		get_next_line(const int fd, char **line)
 {
 	static char	buffer[BUFF_SIZE + 1];
 	static char	*ptr;
 	char		*tmp;
-	char		*nlret;
 	char		*ret_line;
 	int			read_ret;
 	int			newline;
@@ -77,9 +76,7 @@ int		get_next_line(const int fd, char **line)
 		tmp = ft_strchr(ptr, '\n');
 		if (tmp)
 		{
-			nlret = get_uptonl(ptr);
-			ret_line = ft_strjoin(ret_line, nlret);
-			free (nlret);
+			ret_line = ft_strjoin(ret_line, get_uptonl(ptr));
 			newline = 1;
 			if (ptr - tmp == 0)
 			{
@@ -97,5 +94,7 @@ int		get_next_line(const int fd, char **line)
 		}
 	}
 	*line = ret_line;
+	if (read_ret > 0)
+		return (1);
 	return (read_ret);
 }
