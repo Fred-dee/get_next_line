@@ -1,19 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strnequ.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdilapi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/23 11:39:56 by mdilapi           #+#    #+#             */
-/*   Updated: 2018/05/23 11:39:57 by mdilapi          ###   ########.fr       */
+/*   Created: 2018/05/21 08:18:17 by mdilapi           #+#    #+#             */
+/*   Updated: 2018/05/21 08:18:20 by mdilapi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 32
-# include "./libft/libft.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <string.h>
 
-int	get_next_line(const int fd, char **line);
-#endif
+int		ft_strnequ(char const *s1, char const *s2, size_t n)
+{
+	size_t i;
+
+	i = 0;
+	if (s1 != NULL && s2 != NULL)
+	{
+		while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+		{
+			if (s1[i] != s2[i])
+				return (0);
+			i++;
+		}
+		if ((s1[i] == '\0' && s2[i] == '\0') || i == n)
+			return (1);
+	}
+	return (0);
+}

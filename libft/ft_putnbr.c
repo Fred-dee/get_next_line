@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdilapi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/23 11:39:56 by mdilapi           #+#    #+#             */
-/*   Updated: 2018/05/23 11:39:57 by mdilapi          ###   ########.fr       */
+/*   Created: 2018/05/21 08:13:56 by mdilapi           #+#    #+#             */
+/*   Updated: 2018/05/21 08:13:57 by mdilapi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 32
-# include "./libft/libft.h"
+#include "libft.h"
 
-int	get_next_line(const int fd, char **line);
-#endif
+static void	recursive(int n)
+{
+	if (ABS(n) > 9 || ABS(n) < 0)
+		recursive(n / 10);
+	ft_putchar(ABS(ABS(n) % 10) + '0');
+}
+
+void		ft_putnbr(int n)
+{
+	if (n < 0)
+		ft_putchar('-');
+	recursive(n);
+}

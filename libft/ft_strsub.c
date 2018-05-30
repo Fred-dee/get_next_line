@@ -1,19 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdilapi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/23 11:39:56 by mdilapi           #+#    #+#             */
-/*   Updated: 2018/05/23 11:39:57 by mdilapi          ###   ########.fr       */
+/*   Created: 2018/05/21 08:19:37 by mdilapi           #+#    #+#             */
+/*   Updated: 2018/05/21 08:19:38 by mdilapi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 32
-# include "./libft/libft.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	get_next_line(const int fd, char **line);
-#endif
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
+{
+	char			*ret;
+	unsigned int	i;
+	size_t			count;
+
+	ret = NULL;
+	if (s != NULL)
+	{
+		ret = ft_strnew(len);
+		if (ret != NULL)
+		{
+			i = start;
+			count = 0;
+			while (s[i] != '\0' && count < len)
+				ret[count++] = s[i++];
+		}
+	}
+	return (ret);
+}
