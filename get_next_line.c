@@ -16,6 +16,25 @@
 #include <unistd.h>
 #include <stdio.h>
 
+char *get_uptonl(char *s1)
+{
+	size_t i;
+	char *ret;
+
+	i = 0;
+	while (s1[i] != '\0' && s1[i] != '\n')
+		i++;
+	if((ret = (char *)malloc(sizeof(char) * i)) != NULL)
+	{
+		i = 0;
+		while(s1[i] != '\0' && s1[i] != '\n')
+		{
+			ret[i] = s1[i];
+			i++;
+		}
+	}
+	return (ret);
+}
 int	get_next_line(const int fd, char **line)
 {
 	static char	buffer[BUFF_SIZE];
@@ -41,16 +60,17 @@ int	get_next_line(const int fd, char **line)
 		tmp = ft_strchr(ptr, '\n');
 		if(tmp)
 		{
-			ret_line = ft_strjoin(ret_line, ft_strsub(ptr, 0, ptr - tmp));
+			ret_line = ft_strjoin(ret_line, get_uptonl(ptr));
 			newline = 1;
 			if (ptr - tmp  == 0)
 			{
 				ft_strclr(buffer);
-			} else ptr = ++tmp;			
+			} 
+			ptr = ++tmp;			
 		}
 		else 
 		{
-			ret_line = ft_strjoin(ret_line, buffer);
+			ret_line = ft_strjoin(ret_line, ptr);
 			read_ret = read(fd, buffer, BUFF_SIZE);
 			ptr = buffer;
 		}
