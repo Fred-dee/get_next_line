@@ -53,7 +53,7 @@ int	get_next_line(const int fd, char **line)
 	if (ft_isempty(buffer))
 	{
 		read_ret = read(fd, buffer, BUFF_SIZE);
-		buffer[read_ret + 1] = '\0';
+		buffer[read_ret] = '\0';
 		if (read_ret == -1)
 			return (read_ret);
 		ptr = buffer;
@@ -63,9 +63,7 @@ int	get_next_line(const int fd, char **line)
 		tmp = ft_strchr(ptr, '\n');
 		if(tmp)
 		{
-			//printf("String join : 1\n");
 			ret_line = ft_strjoin(ret_line, get_uptonl(ptr));
-			//printf("String join : 1-2\n");
 			newline = 1;
 			if (ptr - tmp  == 0)
 			{
@@ -76,11 +74,9 @@ int	get_next_line(const int fd, char **line)
 		}
 		else 
 		{
-			//printf("String join : 2\n");
 			ret_line = ft_strjoin(ret_line, ptr);
-			//printf("String join : 2-2\n");
 			read_ret = read(fd, buffer, BUFF_SIZE);
-			buffer[read_ret + 1] = '\0';
+			buffer[read_ret] = '\0';
 			ptr = buffer;
 		}
 	}
