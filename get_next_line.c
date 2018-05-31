@@ -16,6 +16,15 @@
 #include <unistd.h>
 #include <stdio.h>
 
+
+void	swapnfree(char **var, char *new_val)
+{
+	char	*tmp;
+
+	tmp = new_val;
+	free(*var);
+	*var = tmp;
+}
 static char	*get_uptonl(char *s1)
 {
 	size_t	i;
@@ -39,7 +48,7 @@ static char	*get_uptonl(char *s1)
 
 static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 {
-	*ret_line = ft_strjoin(*ret_line, get_uptonl(*ptr));
+	swapnfree(ret_line,ft_strjoin(*ret_line, get_uptonl(*ptr)));
 	if (*ptr - *tmp == 0)
 	{
 		ft_strclr(*buffer);
@@ -70,9 +79,9 @@ static int	gnl(const int fd, char **ret_line, char **buffer, char **ptr)
 		}
 		else
 		{
-			*ret_line = ft_strjoin(*ret_line, *ptr);
+			swapnfree(ret_line, ft_strjoin(*ret_line, *ptr));
 			read_ret = read(fd, *buffer, BUFF_SIZE);
-			buffer[0][BUFF_SIZE + 1] = '\0';
+			buffer[0][read_ret] = '\0';
 			*ptr = *buffer;
 		}
 	}
@@ -95,7 +104,7 @@ int			get_next_line(const int fd, char **line)
 	if (ft_isempty(buffer))
 	{
 		read_ret = read(fd, buffer, BUFF_SIZE);
-		buffer[BUFF_SIZE + 1] = '\0';
+		buffer[read_ret] = '\0';
 		if (read_ret == -1)
 			return (read_ret);
 		ptr = buffer;
