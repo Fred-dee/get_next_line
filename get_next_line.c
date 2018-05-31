@@ -32,22 +32,64 @@ static char	*get_uptonl(char *s1)
 			ret[i] = s1[i];
 			i++;
 		}
-		ret[i - 1] = '\0';
+		ret[i] = '\0';
 	}
 	return (ret);
 }
 
-int		get_next_line(const int fd, char **line)
+static void	insert_at(char *s1, char c, int index)
 {
-	static char	buffer[BUFF_SIZE + 1];
-	static char	*ptr;
-	char		*tmp;
-	char		*ret_line;
-	int			read_ret;
-	int			newline;
+	s1[index] = c;
+}
+
+static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
+{
+	*ret_line = ft_strjoin(*ret_line, get_uptonl(*ptr));
+	if (*ptr - *tmp == 0)
+	{
+		ft_strclr(*buffer);
+		*ptr = *buffer;
+	}
+	else
+		*ptr = ++*tmp;
+}
+
+static int	gnl(const int fd, char **ret_line, char **buffer, char **ptr)
+{
+	int		read_ret;
+	char	*tmp;
+	int		newline;
 
 	read_ret = 20;
 	newline = 0;
+	while (newline == 0 && read_ret > 0)
+	{
+		tmp = ft_strchr(*ptr, '\n');
+		if (tmp)
+		{
+			newline = 1;
+			work(&tmp, ret_line, buffer, ptr);
+		}
+		else
+		{
+			*ret_line = ft_strjoin(*ret_line, *ptr);
+			read_ret = read(fd, *buffer, BUFF_SIZE);
+			insert_at(*buffer, '\0', read_ret);
+			*ptr = *buffer;
+		}
+	}
+	return (read_ret);
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	static char	*buffer;
+	static char	*ptr;
+	char		*ret_line;
+	int			read_ret;
+
+	if (buffer == NULL)
+		buffer = ft_strnew(BUFF_SIZE + 1);
 	if (line == NULL || fd < 0)
 		return (-1);
 	ret_line = ft_strnew(BUFF_SIZE + 1);
@@ -60,27 +102,7 @@ int		get_next_line(const int fd, char **line)
 			return (read_ret);
 		ptr = buffer;
 	}
-	while (newline == 0 && read_ret > 0)
-	{
-		tmp = ft_strchr(ptr, '\n');
-		if (tmp)
-		{
-			ret_line = ft_strjoin(ret_line, get_uptonl(ptr));
-			newline = 1;
-			if (ptr - tmp == 0)
-			{
-				ft_strclr(buffer);
-				ptr = buffer;
-			} else	ptr = ++tmp;
-		}
-		else
-		{
-			ret_line = ft_strjoin(ret_line, ptr);
-			read_ret = read(fd, buffer, BUFF_SIZE);
-			buffer[read_ret] = '\0';
-			ptr = buffer;
-		}
-	}
+	read_ret = gnl(fd, &ret_line, &buffer, &ptr);
 	*line = ret_line;
 	if (read_ret > 0)
 		return (1);
