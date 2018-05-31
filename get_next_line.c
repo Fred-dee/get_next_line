@@ -37,11 +37,6 @@ static char	*get_uptonl(char *s1)
 	return (ret);
 }
 
-static void	insert_at(char *s1, char c, int index)
-{
-	s1[index] = c;
-}
-
 static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 {
 	*ret_line = ft_strjoin(*ret_line, get_uptonl(*ptr));
@@ -51,7 +46,10 @@ static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 		*ptr = *buffer;
 	}
 	else
-		*ptr = ++*tmp;
+	{
+		*tmp = *tmp + 1;
+		*ptr = *tmp;
+	}
 }
 
 static int	gnl(const int fd, char **ret_line, char **buffer, char **ptr)
@@ -74,7 +72,7 @@ static int	gnl(const int fd, char **ret_line, char **buffer, char **ptr)
 		{
 			*ret_line = ft_strjoin(*ret_line, *ptr);
 			read_ret = read(fd, *buffer, BUFF_SIZE);
-			insert_at(*buffer, '\0', read_ret);
+			buffer[0][BUFF_SIZE + 1] = '\0';
 			*ptr = *buffer;
 		}
 	}
@@ -97,7 +95,7 @@ int			get_next_line(const int fd, char **line)
 	if (ft_isempty(buffer))
 	{
 		read_ret = read(fd, buffer, BUFF_SIZE);
-		buffer[read_ret] = '\0';
+		buffer[BUFF_SIZE + 1] = '\0';
 		if (read_ret == -1)
 			return (read_ret);
 		ptr = buffer;
