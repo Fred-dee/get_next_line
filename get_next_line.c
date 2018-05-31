@@ -32,22 +32,9 @@ static char	*get_uptonl(char *s1)
 			ret[i] = s1[i];
 			i++;
 		}
-		ret[i] = '\0';
+		ret[i - 1] = '\0';
 	}
 	return (ret);
-}
-
-static int	inital_test(char *buffer, int *read_ret, const int fd)
-{
-	if (ft_isempty(buffer))
-	{
-		*read_ret = read(fd, buffer, BUFF_SIZE);
-		buffer[*read_ret] = '\0';
-		if (*read_ret == -1)
-			return (*read_ret);
-		return (2);
-	}
-	return (1);
 }
 
 int		get_next_line(const int fd, char **line)
@@ -58,7 +45,6 @@ int		get_next_line(const int fd, char **line)
 	char		*ret_line;
 	int			read_ret;
 	int			newline;
-	int			test_result;
 
 	read_ret = 20;
 	newline = 0;
@@ -66,11 +52,14 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	ret_line = ft_strnew(BUFF_SIZE + 1);
 	ft_strclr(ret_line);
-	test_result = inital_test(buffer, &read_ret, fd);
-	if (test_result == -1)
-		return (-1);
-	else if (test_result == 2)
+	if (ft_isempty(buffer))
+	{
+		read_ret = read(fd, buffer, BUFF_SIZE);
+		buffer[read_ret] = '\0';
+		if (read_ret == -1)
+			return (read_ret);
 		ptr = buffer;
+	}
 	while (newline == 0 && read_ret > 0)
 	{
 		tmp = ft_strchr(ptr, '\n');
@@ -82,8 +71,7 @@ int		get_next_line(const int fd, char **line)
 			{
 				ft_strclr(buffer);
 				ptr = buffer;
-			}
-			ptr = ++tmp;
+			} else	ptr = ++tmp;
 		}
 		else
 		{
