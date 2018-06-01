@@ -15,17 +15,8 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
-	int buff[2];
-
 	if (fd >= 0)
 	{
-		if (ft_isascii(c))
-			write(fd, &c, 1);
-		else
-		{
-			ft_memmove(buff, "\u00A9", 2);
-			ft_memmove(buff + 1, &c, 1);
-			write(fd, buff, 2);
-		}
+		write(fd, &c, 1);
 	}
 }

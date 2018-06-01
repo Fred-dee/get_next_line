@@ -27,9 +27,9 @@ $(OBJ): $(SRC)
 	gcc $(FLAGS) -c libft.h $(SRC)
 
 clean:
-	rm $(OBJ)
+	rm -f $(OBJ)
 
 fclean:
-	rm $(NAME)
+	rm -f $(NAME)
 
 re: fclean clean all

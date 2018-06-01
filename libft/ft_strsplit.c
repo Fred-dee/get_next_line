@@ -51,8 +51,6 @@ static size_t	word_len(char const *s, char c)
 char			**ft_strsplit(char const *s, char c)
 {
 	char		**ret;
-	size_t		d_len;
-	size_t		w_len;
 	size_t		i;
 	size_t		j;
 	char const	*tmp;
@@ -60,21 +58,18 @@ char			**ft_strsplit(char const *s, char c)
 	if (s == NULL)
 		return (NULL);
 	tmp = s;
-	d_len = word_count(tmp, c);
-	if ((ret = (char **)malloc(sizeof(char *) * d_len + 1)) != NULL)
+	if ((ret = (char **)malloc(sizeof(char *) * word_count(s, c) + 1)) != NULL)
 	{
 		i = 0;
-		while (i < d_len)
+		while (i < word_count(s, c))
 		{
 			while (*tmp == c && *tmp != '\0')
 				tmp++;
-			w_len = word_len(tmp, c);
-			ret[i] = (char *)malloc(sizeof(char) * w_len + 1);
+			ret[i] = (char *)malloc(sizeof(char) * word_len(tmp, c) + 1);
 			j = 0;
 			while (*tmp != c && *tmp != '\0')
 				ret[i][j++] = *tmp++;
-			ret[i][j] = '\0';
-			i++;
+			ret[i++][j] = '\0';
 		}
 		ret[i] = NULL;
 	}

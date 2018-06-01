@@ -37,9 +37,9 @@ char		*ft_strnstr(const char *s1, const char *s2, size_t len)
 	size_t		i;
 
 	i = 0;
-	if (ft_strlen(s2) == 0 || len == 0)
+	if (ft_strlen(s2) == 0)
 		return ((char *)s1);
-	if (ft_strlen(s1) == 0)
+	if (ft_strlen(s1) == 0 || len == 0)
 		return (NULL);
 	tmp = s1;
 	while (*tmp != '\0' && i < len)

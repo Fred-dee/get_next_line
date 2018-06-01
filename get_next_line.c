@@ -14,8 +14,6 @@
 #include "./libft/includes/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
-
 
 void	swapnfree(char **var, char *new_val)
 {
@@ -25,6 +23,7 @@ void	swapnfree(char **var, char *new_val)
 	free(*var);
 	*var = tmp;
 }
+
 static char	*get_uptonl(char *s1)
 {
 	size_t	i;
@@ -95,10 +94,10 @@ int			get_next_line(const int fd, char **line)
 	char		*ret_line;
 	int			read_ret;
 
-	if (buffer == NULL)
-		buffer = ft_strnew(BUFF_SIZE + 1);
 	if (line == NULL || fd < 0)
 		return (-1);
+	if (buffer == NULL)
+		buffer = ft_strnew(BUFF_SIZE + 1);
 	ret_line = ft_strnew(BUFF_SIZE + 1);
 	ft_strclr(ret_line);
 	if (ft_isempty(buffer))

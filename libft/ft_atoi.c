@@ -65,7 +65,7 @@ int			ft_atoi(const char *str)
 		tmp++;
 	if (*tmp == '\0' || ft_isdigit(*tmp) == 0)
 		return (0);
-	while(*tmp == '0' && *tmp != '\0')
+	while (*tmp == '0' && *tmp != '\0')
 		tmp++;
 	return ((int)work(tmp, sign));
 }
