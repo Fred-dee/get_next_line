@@ -113,8 +113,10 @@ int			get_next_line(const int fd, char **line)
 		ptr = buffer;
 	}
 	read_ret = gnl(fd, &ret_line, &buffer, &ptr);
+	if (read_ret < 0)
+		return (-1);
+	if (ft_isempty(ret_line) && read_ret == 0)
+		return (0);
 	*line = ret_line;
-	if (read_ret > 0)
-		return (1);
-	return (read_ret);
+	return (1);
 }
