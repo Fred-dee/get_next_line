@@ -51,7 +51,7 @@ static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 
 	verytmp = get_uptonl(*ptr);
 	swapnfree(ret_line, ft_strjoin(*ret_line, verytmp));
-	if (*ptr - *tmp == 0)
+	if (*(tmp + 1) == '\0')
 	{
 		ft_strclr(*buffer);
 		*ptr = *buffer;
@@ -106,7 +106,7 @@ int			get_next_line(const int fd, char **line)
 	ft_strclr(ret_line);
 	if (ft_isempty(buffer))
 	{
-		if ((read_ret = read(fd, buffer, BUFF_SIZE)) == -1)
+		if ((read_ret = read(fd, buffer, BUFF_SIZE)) < 0)
 			return (-1);
 		buffer[read_ret] = '\0';
 		ptr = buffer;
