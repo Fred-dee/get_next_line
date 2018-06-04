@@ -47,7 +47,10 @@ static char	*get_uptonl(char *s1)
 
 static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 {
-	swapnfree(ret_line,ft_strjoin(*ret_line, get_uptonl(*ptr)));
+	char	*verytmp;
+
+	verytmp = get_uptonl(*ptr);
+	swapnfree(ret_line,ft_strjoin(*ret_line, verytmp));
 	if (*ptr - *tmp == 0)
 	{
 		ft_strclr(*buffer);
@@ -58,6 +61,7 @@ static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 		*tmp = *tmp + 1;
 		*ptr = *tmp;
 	}
+	free(verytmp);
 }
 
 static int	gnl(const int fd, char **ret_line, char **buffer, char **ptr)
