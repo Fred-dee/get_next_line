@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	swapnfree(char **var, char *new_val)
+void		swapnfree(char **var, char *new_val)
 {
 	char	*tmp;
 
@@ -50,7 +50,7 @@ static void	work(char **tmp, char **ret_line, char **buffer, char **ptr)
 	char	*verytmp;
 
 	verytmp = get_uptonl(*ptr);
-	swapnfree(ret_line,ft_strjoin(*ret_line, verytmp));
+	swapnfree(ret_line, ft_strjoin(*ret_line, verytmp));
 	if (*ptr - *tmp == 0)
 	{
 		ft_strclr(*buffer);
@@ -106,10 +106,9 @@ int			get_next_line(const int fd, char **line)
 	ft_strclr(ret_line);
 	if (ft_isempty(buffer))
 	{
-		read_ret = read(fd, buffer, BUFF_SIZE);
+		if ((read_ret = read(fd, buffer, BUFF_SIZE)) == -1)
+			return (-1);
 		buffer[read_ret] = '\0';
-		if (read_ret == -1)
-			return (read_ret);
 		ptr = buffer;
 	}
 	read_ret = gnl(fd, &ret_line, &buffer, &ptr);
