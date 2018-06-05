@@ -55,11 +55,11 @@ static char		*get_afternl(char *s1)
 	i = 0;
 	while (s1[i] != '\0' && s1[i] != '\n')
 		i++;
-	if (s1[i] == '\0')
+	if (s1[i] == '\0' || s1[i] != '\n')
 		return (NULL);
 	i++;
 	j = 0;
-	if ((ret = (char *)malloc(sizeof(char) * ft_strlen(s1) - i + 1)) != NULL)
+	if ((ret = (char *)malloc(sizeof(char) * ft_strlen(s1) - i + 2)) != NULL)
 	{
 		while(s1[i] != '\0')
 			ret[j++] = s1[i++];
@@ -86,7 +86,9 @@ static int	gnl(const int fd, char **ret_line, char **buffer)
 			vrytmp = get_uptonl(*buffer);
 			swapnfree(ret_line, ft_strjoin(*ret_line, vrytmp));
 			if (*(tmp + 1) == '\0')
+			{
 				ft_strclr(*buffer);
+			}
 			else
 			{
 				swapnfree(buffer, get_afternl(*buffer));
@@ -97,8 +99,7 @@ static int	gnl(const int fd, char **ret_line, char **buffer)
 		{
 			swapnfree(ret_line, ft_strjoin(*ret_line, *buffer));
 			ft_strclr(*buffer);
-			if((read_ret = read(fd, *buffer, BUFF_SIZE)) == -1)
-				return (-1);
+			read_ret = read(fd, *buffer, BUFF_SIZE);
 			buffer[0][read_ret] = '\0';
 		}
 	}
@@ -121,6 +122,7 @@ int			get_next_line(const int fd, char **line)
 			return (-1);
 		buffers[fd][read_ret] = '\0';  
 	}
+	ft_strclr(ret_line);
 	if((read_ret = gnl(fd, &ret_line, &buffers[fd]) < 0))
 		return (-1);
 	if (ft_isempty(ret_line) && read_ret == 0)
