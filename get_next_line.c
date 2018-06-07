@@ -26,7 +26,7 @@ void		swapnfree(char **var, char *new_val)
 	*var = tmp;
 }
 
-int	index_of(const char *s, const char c)
+static int	index_of(const char *s, const char c)
 {
 	int i;
 
@@ -42,12 +42,29 @@ int	index_of(const char *s, const char c)
 	return (-1);
 }
 
-static 	int	gnl(const int fd, char **ret_line, char **buffer)
+static void	work(char **ret_line, char **buffer, int nl_index, int *nl)
+{
+	char	*tmp;
+
+	*nl = 1;
+	tmp = ft_strsub(*buffer, 0, nl_index);
+	swapnfree(ret_line, ft_strjoin(*ret_line, tmp));
+	free(tmp);
+	if (BUFF_SIZE - nl_index == 0)
+		ft_strclr(*buffer);
+	else
+	{
+		swapnfree(buffer, ft_strsub(*buffer, nl_index + 1,
+			BUFF_SIZE - nl_index));
+		buffer[0][BUFF_SIZE - nl_index + 1] = '\0';
+	}
+}
+
+static int	gnl(const int fd, char **ret_line, char **buffer)
 {
 	int		read_ret;
 	int		nl;
 	int		nl_index;
-	char	*tmp;
 	char	*r;
 
 	read_ret = 3;
@@ -57,28 +74,13 @@ static 	int	gnl(const int fd, char **ret_line, char **buffer)
 	{
 		nl_index = index_of(*buffer, '\n');
 		if (nl_index != -1)
-		{
-			nl = 1;
-			tmp = ft_strsub(*buffer, 0, nl_index);
-			swapnfree(&r , ft_strjoin(r, tmp));
-			free (tmp);
-			if (BUFF_SIZE - nl_index == 0)
-			{
-				ft_strclr(*buffer);
-			}
-			else
-			{
-				swapnfree(buffer , ft_strsub(*buffer, nl_index + 1, BUFF_SIZE - nl_index));
-				buffer[0][BUFF_SIZE - nl_index + 1] = '\0';
-			}
-		}
+			work(&r, buffer, nl_index, &nl);
 		else
 		{
 			swapnfree(&r, ft_strjoin(r, *buffer));
 			swapnfree(buffer, *buffer);
 			*buffer = ft_strnew(BUFF_SIZE + 1);
-			if ((read_ret = read(fd, *buffer, BUFF_SIZE)) == -1)
-				return (-1);
+			read_ret = read(fd, *buffer, BUFF_SIZE);
 			buffer[0][read_ret] = '\0';
 		}
 	}
