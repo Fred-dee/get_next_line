@@ -62,10 +62,7 @@ static 	int	gnl(const int fd, char **ret_line, char **buffer)
 			if (BUFF_SIZE - nl_index == 0)
 				ft_strclr(*buffer);
 			else
-			{
-				tmp = ft_strsub(*buffer, nl_index + 1, BUFF_SIZE - nl_index);
-				swapnfree(buffer , tmp);
-			}
+				swapnfree(buffer , ft_strsub(*buffer, nl_index + 1, BUFF_SIZE - nl_index));
 		}
 		else
 		{
