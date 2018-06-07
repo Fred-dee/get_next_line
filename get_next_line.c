@@ -46,6 +46,7 @@ static 	int	gnl(const int fd, char **ret_line, char **buffer)
 	int		read_ret;
 	int		nl;
 	int		nl_index;
+	char	*tmp;
 
 	read_ret = 3;
 	nl = 0;
@@ -55,19 +56,26 @@ static 	int	gnl(const int fd, char **ret_line, char **buffer)
 		if (nl_index != -1)
 		{
 			nl = 1;
-			swapnfree(ret_line, ft_strjoin(*ret_line, ft_strsub(*buffer, 0, nl_index)));
+			tmp = ft_strsub(*buffer, 0, nl_index);
+			swapnfree(ret_line, ft_strjoin(*ret_line, tmp));
+			free (tmp);
 			if (BUFF_SIZE - nl_index == 0)
 				ft_strclr(*buffer);
-			else *buffer = ft_strsub(*buffer, nl_index + 1, BUFF_SIZE - nl_index);
+			else
+			{
+				tmp = ft_strsub(*buffer, nl_index + 1, BUFF_SIZE - nl_index);
+				swapnfree(buffer , tmp);
+			}
 		}
 		else
 		{
 			swapnfree(ret_line, ft_strjoin(*ret_line, *buffer));
-			ft_strclr (*buffer);
 			swapnfree(buffer, *buffer);
 			*buffer = ft_strnew(BUFF_SIZE + 1);
 			if ((read_ret = read(fd, *buffer, BUFF_SIZE)) == -1)
 				return (-1);
+			if (ft_isempty(*buffer))
+				return (0);
 			buffer[0][read_ret] = '\0';
 		}
 	}
@@ -76,7 +84,7 @@ static 	int	gnl(const int fd, char **ret_line, char **buffer)
 
 int			get_next_line(const int fd, char **line)
 {
-	char static	*buffer[100];
+	static char	*buffer[100];
 	char		*ret_line;
 	int			read_ret;
 
