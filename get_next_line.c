@@ -48,12 +48,12 @@ static void	work(char **ret_line, char **buffer, int nl)
 	tmp[nl] = '\0';
 	swapnfree(ret_line, ft_strjoin(*ret_line, tmp));
 	free(tmp);
-	tmp = ft_strsub(*buffer, nl + 1, BUFF_SIZE - nl - 1);
-	tmp[BUFF_SIZE - nl - 1] = '\0';
+	tmp = ft_strsub(*buffer, nl + 1, BUFF_SIZE);
+	tmp[BUFF_SIZE - nl] = '\0';
 	ft_memmove(*buffer, tmp, ft_strlen(tmp) + 1);
-	free(tmp);
-	if (buffer[0][nl + 1] == '\0')
+	if (buffer[0][0] == '\0')
 		ft_strclr(*buffer);
+	free(tmp);
 }
 
 static int	gnl(const int fd, char **ret_line, char **buffer)
@@ -69,9 +69,7 @@ static int	gnl(const int fd, char **ret_line, char **buffer)
 	{
 		nl = index_of(*buffer, '\n');
 		if (nl != -1)
-		{
 			work(ret_line, buffer, nl);
-		}
 		else
 		{
 			swapnfree(ret_line, ft_strjoin(*ret_line, *buffer));
