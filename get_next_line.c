@@ -14,14 +14,12 @@
 #include "./libft/includes/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
-void		swapnfree(char **var, char *new_val)
+static void	swapnfree(char **var, char *new_val)
 {
 	char	*tmp;
 
-	if (*var != NULL && **var != '\0')
-		free(*var);
+	free(*var);
 	tmp = new_val;
 	*var = tmp;
 }
@@ -42,49 +40,46 @@ static int	index_of(const char *s, const char c)
 	return (-1);
 }
 
-static void	work(char **ret_line, char **buffer, int nl_index, int *nl)
+static void	work(char **ret_line, char **buffer, int nl)
 {
 	char	*tmp;
 
-	*nl = 1;
-	tmp = ft_strsub(*buffer, 0, nl_index);
+	tmp = ft_strsub(*buffer, 0, nl + 1);
+	tmp[nl] = '\0';
 	swapnfree(ret_line, ft_strjoin(*ret_line, tmp));
 	free(tmp);
-	if (BUFF_SIZE - nl_index == 0)
+	tmp = ft_strsub(*buffer, nl + 1, BUFF_SIZE - nl - 1);
+	tmp[BUFF_SIZE - nl - 1] = '\0';
+	ft_memmove(*buffer, tmp, ft_strlen(tmp) + 1);
+	free(tmp);
+	if (buffer[0][nl + 1] == '\0')
 		ft_strclr(*buffer);
-	else
-	{
-		swapnfree(buffer, ft_strsub(*buffer, nl_index + 1,
-			BUFF_SIZE - nl_index));
-		buffer[0][BUFF_SIZE - nl_index + 1] = '\0';
-	}
 }
 
 static int	gnl(const int fd, char **ret_line, char **buffer)
 {
 	int		read_ret;
 	int		nl;
-	int		nl_index;
-	char	*r;
+	char	*tmp;
 
+	nl = -1;
 	read_ret = 3;
-	nl = 0;
-	r = ft_strnew(BUFF_SIZE + 1);
-	while (nl == 0 && read_ret > 0)
+	tmp = NULL;
+	while (nl == -1 && read_ret > 0)
 	{
-		nl_index = index_of(*buffer, '\n');
-		if (nl_index != -1)
-			work(&r, buffer, nl_index, &nl);
+		nl = index_of(*buffer, '\n');
+		if (nl != -1)
+		{
+			work(ret_line, buffer, nl);
+		}
 		else
 		{
-			swapnfree(&r, ft_strjoin(r, *buffer));
-			swapnfree(buffer, *buffer);
-			*buffer = ft_strnew(BUFF_SIZE + 1);
+			swapnfree(ret_line, ft_strjoin(*ret_line, *buffer));
+			ft_strclr(*buffer);
 			read_ret = read(fd, *buffer, BUFF_SIZE);
 			buffer[0][read_ret] = '\0';
 		}
 	}
-	swapnfree(ret_line, r);
 	return (read_ret);
 }
 
