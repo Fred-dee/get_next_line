@@ -60,11 +60,9 @@ static int	gnl(const int fd, char **ret_line, char **buffer)
 {
 	int		read_ret;
 	int		nl;
-	char	*tmp;
 
 	nl = -1;
 	read_ret = 3;
-	tmp = NULL;
 	while (nl == -1 && read_ret > 0)
 	{
 		nl = index_of(*buffer, '\n');
