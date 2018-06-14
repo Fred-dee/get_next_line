@@ -40,7 +40,7 @@ char			*ft_strtrim(char const *s)
 	while (*tmp == ' ' || *tmp == '\t' || *tmp == '\n')
 		tmp++;
 	if (*tmp == '\0')
-		return ("");
+		return (ft_strdup(""));
 	i = ft_strlen(s) - 1;
 	n_size = ft_strlen(tmp) - white_count(s, &i);
 	if ((ret = ft_strnew(n_size)) != NULL)

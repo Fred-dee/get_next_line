@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdilapi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/13 09:07:10 by mdilapi           #+#    #+#             */
-/*   Updated: 2018/06/13 09:07:11 by mdilapi          ###   ########.fr       */
+/*   Created: 2018/06/14 10:37:57 by mdilapi           #+#    #+#             */
+/*   Updated: 2018/06/14 10:38:21 by mdilapi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int ft_isempty(char *s)
+int	ft_isempty(char *s)
 {
 	return (*s == '\0');
 }

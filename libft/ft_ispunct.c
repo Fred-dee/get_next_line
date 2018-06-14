@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncpy.c                                       :+:      :+:    :+:   */
+/*   ft_ispunct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdilapi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/21 08:18:00 by mdilapi           #+#    #+#             */
-/*   Updated: 2018/05/21 08:18:01 by mdilapi          ###   ########.fr       */
+/*   Created: 2018/06/14 10:51:29 by mdilapi           #+#    #+#             */
+/*   Updated: 2018/06/14 10:51:30 by mdilapi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strncpy(char *s1, const char *s2, size_t n)
+int	ft_ispunct(int c)
 {
-	size_t	i;
-
-	i = 0;
-	while (s2[i] != '\0' && i < n)
-	{
-		s1[i] = s2[i];
-		i++;
-	}
-	if (s2[i] == '\0' && i < n)
-		s1[i] = '\0';
-	while (i < n)
-		s1[i++] = '\0';
-	return (s1);
+	if (ft_isalnum(c) > 0 || ft_isspace(c) > 0)
+		return (0);
+	return ((unsigned char)c);
 }

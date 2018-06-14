@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncpy.c                                       :+:      :+:    :+:   */
+/*   ft_islower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdilapi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/21 08:18:00 by mdilapi           #+#    #+#             */
-/*   Updated: 2018/05/21 08:18:01 by mdilapi          ###   ########.fr       */
+/*   Created: 2018/06/14 10:51:10 by mdilapi           #+#    #+#             */
+/*   Updated: 2018/06/14 10:51:12 by mdilapi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strncpy(char *s1, const char *s2, size_t n)
+int	ft_islower(int c)
 {
-	size_t	i;
-
-	i = 0;
-	while (s2[i] != '\0' && i < n)
-	{
-		s1[i] = s2[i];
-		i++;
-	}
-	if (s2[i] == '\0' && i < n)
-		s1[i] = '\0';
-	while (i < n)
-		s1[i++] = '\0';
-	return (s1);
+	return ((c >= 'a' && c <= 'z'));
 }
