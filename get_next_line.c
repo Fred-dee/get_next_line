@@ -75,7 +75,8 @@ static int	gnl(const int fd, char **ret_line, char **buffer)
 		{
 			swapnfree(ret_line, ft_strjoin(*ret_line, *buffer));
 			ft_bzero(*buffer, (size_t)(BUFF_SIZE + 1));
-			read_ret = read(fd, *buffer, BUFF_SIZE);
+			if ((read_ret = read(fd, *buffer, BUFF_SIZE)) < 0)
+				return (-1);
 			buffer[0][read_ret] = '\0';
 		}
 	}
@@ -87,7 +88,7 @@ int			get_next_line(const int fd, char **line)
 	static char	*buffer[100];
 	int			read_ret;
 
-	if (fd < 0 || !line || BUFF_SIZE <= 0)
+	if (fd < 0 || fd > 100 || !line || BUFF_SIZE <= 0)
 		return (-1);
 	if (buffer[fd] == NULL)
 		buffer[fd] = ft_strnew(BUFF_SIZE + 1);
