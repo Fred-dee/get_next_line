@@ -85,10 +85,10 @@ static int	gnl(const int fd, char **ret_line, char **buffer)
 
 int			get_next_line(const int fd, char **line)
 {
-	static char	*buffer[100];
+	static char	*buffer[MI];
 	int			read_ret;
 
-	if (fd < 0 || fd > 100 || !line || BUFF_SIZE <= 0)
+	if (fd < 0 || !line || BUFF_SIZE < 0 || read(fd, buffer[fd], 0) < 0)
 		return (-1);
 	if (buffer[fd] == NULL)
 		buffer[fd] = ft_strnew(BUFF_SIZE + 1);
